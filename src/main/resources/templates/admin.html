@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Admin Panel</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+
+<div class="topbar" >
+  <nav style="text-align: center">
+    <a th:href="@{/termini}" target="adminContent">Termini</a>
+    <a th:href="@{/usluge}" target="adminContent">Usluge</a>
+    <a th:href="@{/zaposleni}" target="adminContent">Zaposleni</a>
+    <a th:href="@{/home}">Početna</a>
+  </nav>
+</div>
+
+<div class="content">
+  <iframe name="adminContent"></iframe>
+</div>
+
+
+</body>
+</html>

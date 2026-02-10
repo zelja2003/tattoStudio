@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Registracija</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body >
+
+<div class="form-container">
+  <h2>REGISTRACIJA</h2>
+
+  <form th:action="@{/register}" method="post" th:object="${korisnik}" class="form-box">
+
+    <div class="form-group">
+      <label for="ime">Ime:</label>
+      <input type="text" id="ime" th:field="*{ime}" required>
+      <p class="error" th:if="${#fields.hasErrors('ime')}" th:errors="*{ime}"></p>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" th:field="*{email}" required>
+      <p class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+    </div>
+
+    <div class="form-group">
+      <label for="lozinka">Lozinka:</label>
+      <input type="password" id="lozinka" th:field="*{lozinka}" required>
+      <p class="error" th:if="${#fields.hasErrors('lozinka')}" th:errors="*{lozinka}"></p>
+    </div>
+
+    <button type="submit" class="btn">Registruj se</button>
+
+    <p class="error" th:if="${greska}" th:text="${greska}"></p>
+  </form>
+
+  <p class="switch-link">
+    Imaš nalog? <a th:href="@{/login}">Prijavi se</a>
+  </p>
+
+  <p class="switch-link">
+    <a th:href="@{/home}">Povratak na početnu</a>
+  </p>
+</div>
+
+</body>
+</html>

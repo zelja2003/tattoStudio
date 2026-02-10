@@ -1,0 +1,36 @@
+
+<head>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/usluge/lista.css}">
+</head>
+
+<div class="container">
+    <h2>Lista usluga</h2>
+
+
+
+    <table>
+        <thead>
+        <tr>
+            <th>Naziv</th>
+            <th>Trajanje (min)</th>
+            <th>Cena</th>
+            <th>Akcije</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="u : ${usluge}">
+            <td th:text="${u.naziv}">naziv</td>
+            <td th:text="${u.trajanjeMinuta}">trajanje</td>
+            <td th:text="${u.cena}">cena</td>
+            <td>
+                <a th:href="@{'/usluge/izmeni/' + ${u.id}}" class="action">Izmeni</a>
+                <a th:href="@{'/usluge/obrisi/' + ${u.id}}" class="action">Obriši</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/usluge/nova}" class="add-btn">Dodaj novu uslugu</a>
+</div>
+

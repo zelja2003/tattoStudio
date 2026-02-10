@@ -1,0 +1,36 @@
+
+<head>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/termini/lista.css}">
+</head>
+
+<div class="container">
+    <h2>Lista zakazanih termina</h2>
+
+
+
+    <table>
+        <thead>
+        <tr>
+            <th>Korisnik</th>
+            <th>Zaposleni</th>
+            <th>Datum</th>
+            <th>Vreme</th>
+            <th>Akcije</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="t : ${termini}">
+            <td th:text="${t.korisnik?.ime}">korisnik</td>
+            <td th:text="${t.zaposleni?.ime}">frizer</td>
+            <td th:text="${t.datum}">datum</td>
+            <td th:text="${t.vreme}">vreme</td>
+            <td>
+                <a th:href="@{'/termini/izmeni/' + ${t.id}}" class="action-link">Izmeni</a>
+                <a th:href="@{'/termini/obrisi/' + ${t.id}}" class="action-link">Obriši</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/termini/novi}" class="add-btn">Zakazivanje novog termina</a>
+</div>

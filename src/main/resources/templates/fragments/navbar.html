@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<div th:fragment="navbar" class="navbar-modern">
+    <div class="nav-left">
+        <span sec:authorize="isAuthenticated()" th:text="${#authentication.name}"></span>
+        <span sec:authorize="!isAuthenticated()">Gost</span>
+    </div>
+
+    <div class="nav-right">
+        <a th:href="@{/home}" class="nav-link">Početna</a>
+
+        <span sec:authorize="hasRole('KORISNIK')">
+            <a th:href="@{/termini/novi}" class="nav-link">Zakazivanje</a>
+            <a th:href="@{/termini/moji}" class="nav-link">Vaši termini</a>
+        </span>
+
+        <span sec:authorize="hasRole('ADMIN')">
+            <a th:href="@{/admin}" class="nav-link">Podesavanja</a>
+        </span>
+
+        <span sec:authorize="isAuthenticated()">
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button class="nav-btn">Odjava</button>
+            </form>
+        </span>
+
+        <span sec:authorize="!isAuthenticated()">
+            <a th:href="@{/login}" class="nav-link">Prijavi se</a>
+            <a th:href="@{/register}" class="nav-link">Registruj se</a>
+        </span>
+    </div>
+</div>
+
+</body>
+</html>

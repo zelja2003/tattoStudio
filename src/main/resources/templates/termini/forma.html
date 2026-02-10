@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <title>Zakazivanje termina</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/termini/forma.css}">
+</head>
+<body >
+
+<!-- Navbar -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<!-- Forma -->
+<div class="form-container">
+  <h2>Zakazivanje termina</h2>
+
+  <form th:action="@{/termini/sacuvaj}" th:object="${termin}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+
+    <div class="form-group">
+      <label>Korisnik:</label>
+
+      <span sec:authorize="hasRole('KORISNIK')" style="text-align: center">
+    <input type="text" style="text-align: center" th:value="${ulogovaniKorisnik.ime}" disabled />
+    <input type="hidden"  style="text-align: center" th:field="*{korisnik.id}" th:value="${ulogovaniKorisnik.id}" />
+  </span>
+    </div>
+
+
+    <div class="form-group">
+      <label>Zaposleni:</label>
+      <select th:field="*{zaposleni.id}" id="zaposleniSelect">
+        <option th:each="z : ${zaposleniLista}" th:value="${z.id}" th:text="${z.ime}"></option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Usluga:</label>
+      <select id="uslugaSelect" th:field="*{usluge}" required>
+        <option value="" disabled selected>-- Izaberite uslugu --</option>
+        <option th:each="usluga : ${uslugeLista}"
+                th:value="${usluga.id}"
+                th:text="${usluga.naziv}"
+                th:selected="${usluga.id} == ${odabranaUslugaId}"></option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Datum:</label>
+      <input type="date" th:field="*{datum}" id="datumInput" required/>
+    </div>
+
+    <div class="form-group">
+      <label>Vreme:</label>
+      <select id="vremeSelect" name="vreme" required>
+        <option value="" disabled selected>-- Izaberite vreme --</option>
+        <option th:each="vreme : ${vremena}"
+                th:value="${vreme}"
+                th:text="${vreme}">
+        </option>
+      </select>
+    </div>
+
+    <div class="form-buttons">
+      <button type="submit">Sačuvaj</button>
+      <a th:href="@{/home}" class="cancel-button">Nazad</a>
+    </div>
+
+    <p th:if="${greska}" class="error" th:text="${greska}"></p>
+  </form>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const uslugaSelect = document.getElementById('uslugaSelect');
+    const zaposleniSelect = document.getElementById('zaposleniSelect');
+    const datumInput = document.getElementById('datumInput');
+    const vremeSelect = document.getElementById('vremeSelect');
+
+    function azurirajVremena() {
+      const uslugaId = uslugaSelect.value;
+      const zaposleniId = zaposleniSelect.value;
+      const datum = datumInput.value;
+
+      if (uslugaId && zaposleniId && datum) {
+        fetch(`/termini/novi?uslugaId=${uslugaId}&zaposleniId=${zaposleniId}&datum=${datum}`)
+                .then(response => response.text())
+                .then(html => {
+                  const parser = new DOMParser();
+                  const doc = parser.parseFromString(html, 'text/html');
+                  const novaOpcijaLista = doc.querySelectorAll('#vremeSelect option');
+
+                  vremeSelect.innerHTML = '';
+                  novaOpcijaLista.forEach(opcija => {
+                    vremeSelect.appendChild(opcija);
+                  });
+                });
+      }
+    }
+
+    uslugaSelect.addEventListener('change', azurirajVremena);
+    zaposleniSelect.addEventListener('change', azurirajVremena);
+    datumInput.addEventListener('change', azurirajVremena);
+  });
+</script>
+
+
+</body>
+</html>
